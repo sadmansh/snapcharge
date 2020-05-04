@@ -22,19 +22,21 @@ router.post('/auth/register', async (req, res, next) => {
 	
 })
 
-router.post('/auth/login', passport.authenticate('local'), (req, res, next) => {
+router.post('/auth/login', passport.authenticate('local', { session: true }), (req, res, next) => {
 	res.send({ token: tokenForUser(req.user) })
 })
 
-router.get('/auth/user', (req, res) => {
+router.get('/auth/user', (req, res, next) => {
 	res.send(req.user)
 })
 
 const tokenForUser = user => {
 	const timestamp = new Date().getTime()
+	user.password = null
 	return jwt.encode({
 		sub: user.id,
 		iat: timestamp,
+		user: user,
 	}, keys.jwtSecret)
 }
 

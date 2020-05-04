@@ -20,13 +20,14 @@ passport.deserializeUser((id, done) => {
 passport.use(new LocalStrategy({
 	usernameField: 'email',
 	passwordField: 'password',
+	passReqToCallback: true,
 },
-	async (email, password, done) => {
-		console.log('Hit passport local strategy...')
+	async (req, email, password, done) => {
 		try {
 			const user = await User.findOne({ email })
 			if (user) {
 				if (user.comparePassword(password)) {
+					req.user = user
 					return done(null, user)
 				} else {
 					return done(null, false, { errors: { error: 'Password does not match.' } })
@@ -41,14 +42,18 @@ passport.use(new LocalStrategy({
 ))
 
 passport.use(new JwtStrategy({
-	jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 	secretOrKey: keys.jwtSecret,
+	passReqToCallback: true,
 },
-	async (payload, done) => {
-		console.log('Hit passport jwt strategy...')
+	async (req, payload, done) => {
 		try {
 			const user = await User.findById(payload.sub)
-			if (user) return done(null, user)
+			if (user) {
+				user.password = null
+				req.user = user
+				return done(null, user)
+			}
 			else return done(null, false)
 		} catch (error) {
 			return done(error, false)
