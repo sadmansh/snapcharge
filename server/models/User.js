@@ -23,7 +23,7 @@ const UserSchema = new Schema({
 		required: false,
 		default: false
 	},
-	createdAt: {
+	created: {
 		type: Date,
 		default: Date.now()
 	},
@@ -31,6 +31,8 @@ const UserSchema = new Schema({
 		type: String,
 		required: true
 	}
+}, {
+	timestamps: true
 })
 
 UserSchema.pre('save', function(next) {
