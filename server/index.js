@@ -8,6 +8,7 @@ const cors = require('cors')
 
 const keys = require('./config/keys')
 require('./models/User')
+require('./models/Customer')
 require('./services/passport')
 
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })

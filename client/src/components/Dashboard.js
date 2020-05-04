@@ -5,7 +5,6 @@ import * as actions from '../actions'
 class Dashboard extends Component {
 
 	componentDidMount() {
-		this.props.getDashboard()
 		console.log(this.props.user)
 	}
 	
@@ -13,6 +12,7 @@ class Dashboard extends Component {
 		return (
 			<div>
 				This is the dashboard!
+				<button onClick={this.props.createCustomer}>Create customer</button>
 			</div>
 		)
 	}
