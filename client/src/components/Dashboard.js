@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 
+import CreateCustomer from './Customers/CreateCustomer'
+
 class Dashboard extends Component {
 	
 	render() {
 		return (
 			<div>
-				Hello, {this.props.user.firstName}
-				<button onClick={this.props.createCustomer}>Create customer</button>
+				<h1>Hello, {this.props.user.firstName}</h1>
+				<CreateCustomer />
 			</div>
 		)
 	}
