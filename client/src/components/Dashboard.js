@@ -3,23 +3,19 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 
 class Dashboard extends Component {
-
-	componentDidMount() {
-		console.log(this.props.user)
-	}
 	
 	render() {
 		return (
 			<div>
-				This is the dashboard!
+				Hello, {this.props.user.firstName}
 				<button onClick={this.props.createCustomer}>Create customer</button>
 			</div>
 		)
 	}
 }
 
-const mapStateToProps = state => {
-	return { user: state.user }
+const mapStateToProps = ({ user }) => {
+	return { user }
 }
 
 export default connect(mapStateToProps, actions)(Dashboard)

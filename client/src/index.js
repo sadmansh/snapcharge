@@ -7,13 +7,14 @@ import App from './components/App'
 import reducers from './reducers'
 import * as serviceWorker from './serviceWorker'
 import jwt_decode from 'jwt-decode'
+import { FETCH_USER } from './actions/types'
 
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk))
 
 const token = localStorage.getItem('token')
 if (token) {
 	const decodedToken = jwt_decode(token)
-	if (decodedToken.user) store.dispatch({ type: 'FETCH_USER', payload: decodedToken.user })
+	if (decodedToken.user) store.dispatch({ type: FETCH_USER, payload: decodedToken.user })
 }
 
 ReactDOM.render(

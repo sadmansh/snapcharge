@@ -7,38 +7,50 @@ class Register extends Component {
 		super(props)
 
 		this.state = {
-			name: '',
+			firstName: '',
+			lastName: '',
 			email: '',
+			country: 'BD',
 			password: ''
 		}
-		this.handleSubmit = this.handleSubmit.bind(this)
-		this.handleChange = this.handleChange.bind(this)
 	}
 
-	handleChange(e) {
+	componentDidMount() {
+		this.props.fetchCountries()
+	}
+
+	handleChange = (e) => {
 		const { name, value } = e.target
 		this.setState({ [name]: value })
 	}
 
-	handleSubmit(e) {
+	handleSubmit = (e) => {
 		e.preventDefault()
-		const user = {
-			name: this.state.name,
-			email: this.state.email,
-			password: this.state.password
-		}
+		const user = this.state
 		if (user) this.props.registerUser(user)
+	}
+	
+	renderCountriesSelect() {
+		if (this.props.countries) {
+			return this.props.countries.map(country => {
+				return (
+					<option key={country.iso2Code} value={country.iso2Code}>{country.name}</option>
+				)
+			})
+		}
 	}
 
 	render() {
 		return (
 			<div>
-				Welcome to SnapCharge!
-
 				<form onSubmit={this.handleSubmit}>
-					<input type="text" name="name" value={this.state.name} onChange={this.handleChange} />
-					<input type="email" name="email" value={this.state.email} onChange={this.handleChange} />
-					<input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
+					<input type="text" name="firstName" placeholder="First name" value={this.state.firstName} onChange={this.handleChange} />
+					<input type="text" name="lastName" placeholder="Last name" value={this.state.lastName} onChange={this.handleChange} />
+					<input type="email" name="email" placeholder="Email address" value={this.state.email} onChange={this.handleChange} />
+					<input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
+					<select name="country" value={this.state.country} onChange={this.handleChange}>
+						{this.renderCountriesSelect()}
+					</select>
 					<button type="submit">Register</button>
 				</form>
 			</div>
@@ -46,4 +58,8 @@ class Register extends Component {
 	}
 }
 
-export default connect(null, actions)(Register)
+const mapStateToProps = ({ countries }) => {
+	return { countries }
+}
+
+export default connect(mapStateToProps, actions)(Register)

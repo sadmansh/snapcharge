@@ -1,5 +1,4 @@
 import axios from 'axios'
-import history from '../utils/history'
 import AuthHeaders from '../utils/AuthHeaders'
 
 export const createCustomer = () => async dispatch => {
