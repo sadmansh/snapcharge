@@ -1,5 +1,5 @@
 module.exports = {
-	mongoURI: 'mongodb+srv://surve-dev-user:9c72gb48dh@surve-3cmhh.mongodb.net/dev',
+	mongoURI: 'mongodb+srv://snapcharge-dev-user:bFR5x3gNXAFFhJ4Q@snapcharge-dev-fad2t.mongodb.net/dev',
 	cookieKey: 'idealismsitsinPrison@',
 	redirectDomain: 'http://localhost:3000',
 	jwtSecret: 'Chivalryfellonitssword!',
