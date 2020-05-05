@@ -30,6 +30,10 @@ router.get('/auth/user', (req, res, next) => {
 	res.send(req.user)
 })
 
+router.get('/user/countries', (req, res, next) => {
+	res.send(require('../utils/Countries'))
+})
+
 const tokenForUser = user => {
 	const timestamp = new Date().getTime()
 	user.password = null
