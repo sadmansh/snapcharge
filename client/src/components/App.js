@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
-import 'antd/dist/antd.css'
 
 import Landing from './Landing'
 import Login from './Login'
@@ -18,7 +17,7 @@ class App extends Component {
 					<Route exact path="/" component={Landing} />
 					<Route exact path="/login" component={Login} />
 					<Route exact path="/register" component={Register} />
-					<Route exact path="/dashboard" component={Dashboard} />
+					<Route path="/dashboard" component={Dashboard} />
 				</div>
 			</BrowserRouter>
 		)

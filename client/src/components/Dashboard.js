@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Route } from 'react-router-dom'
 import * as actions from '../actions'
 
-import CreateCustomer from './Customers/CreateCustomer'
-import CustomerList from './Customers/CustomerList'
+import DashboardNavigation from './DashboardNavigation'
+import Customers from './Customers/Customers'
 
 class Dashboard extends Component {
 	
 	render() {
 		return (
 			<div>
+				<DashboardNavigation />
 				<h1>Hello, {this.props.user.firstName}</h1>
-				<CreateCustomer />
-				<CustomerList />
+				<Route exact path="/dashboard/customers" component={Customers} />
 			</div>
 		)
 	}
