@@ -36,4 +36,13 @@ router.post('/customers/create', passport.authenticate('jwt', { session: false }
 	}
 })
 
+router.get('/customers', passport.authenticate('jwt', { session: false }), async (req, res) => {
+	try {
+		const customers = await Customer.find({ _user: req.user.id })
+		res.send(customers)
+	} catch (error) {
+		res.status(200).send({ error: error.message })
+	}
+})
+
 module.exports = router
