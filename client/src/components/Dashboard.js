@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 
 import CreateCustomer from './Customers/CreateCustomer'
+import CustomerList from './Customers/CustomerList'
 
 class Dashboard extends Component {
 	
@@ -11,6 +12,7 @@ class Dashboard extends Component {
 			<div>
 				<h1>Hello, {this.props.user.firstName}</h1>
 				<CreateCustomer />
+				<CustomerList />
 			</div>
 		)
 	}
