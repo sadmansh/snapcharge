@@ -5,6 +5,7 @@ import * as actions from '../actions'
 
 import DashboardNavigation from './DashboardNavigation'
 import Customers from './Customers/Customers'
+import Invoices from './Invoices/Invoices'
 
 class Dashboard extends Component {
 	
@@ -14,6 +15,7 @@ class Dashboard extends Component {
 				<DashboardNavigation />
 				<h1>Hello, {this.props.user.firstName}</h1>
 				<Route exact path="/dashboard/customers" component={Customers} />
+				<Route exact path="/dashboard/invoices" component={Invoices} />
 			</div>
 		)
 	}
