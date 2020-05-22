@@ -29,6 +29,8 @@ const CustomerSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'User'
 	}
+}, {
+	timestamps: true
 })
 
 mongoose.model('customers', CustomerSchema)

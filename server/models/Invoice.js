@@ -12,7 +12,7 @@ const InvoiceSchema = new Schema({
 		type: String,
 		required: true
 	},
-	items: {
+	lines: {
 		type: Array,
 		required: false
 	},
@@ -24,7 +24,7 @@ const InvoiceSchema = new Schema({
 		type: String,
 		required: true
 	},
-	collection_method: {
+	collectionMethod: {
 		type: String,
 		required: true
 	},
@@ -36,6 +36,8 @@ const InvoiceSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'User'
 	}
+}, {
+	timestamps: true
 })
 
 mongoose.model('invoices', InvoiceSchema)
