@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const Invoice = mongoose.model('invoices')
 const Customer = mongoose.model('customers')
 
-router.post('/invoices/create', async (req, res) => {
+router.post('/invoices/create', passport.authenticate('jwt', { session: false }), async (req, res) => {
 	try {
 		const customer = await Customer.findById(req.body.customerId)
 		if (customer) {
@@ -16,23 +16,21 @@ router.post('/invoices/create', async (req, res) => {
 				const invoiceItem = await stripe.invoiceItems.create({
 					customer: stripeId,
 					amount: item.amount,
-					currency: item.currency,
-					description: item.description
+					description: item.description,
+					currency: customer.currency
 				})
 			}
-		}
 		
-		if (invoiceItem) {
-			console.log(stripeId)
 			const invoice = await stripe.invoices.create({
 				customer: stripeId,
-				auto_advance: false,
-				collection_method: 'send_invoice',
-				due_date: dueDate,
+				collection_method: req.body.collectionMethod,
+				days_until_due: req.body.daysUntilDue,
+				auto_advance: true,
 				metadata: {
 					user: req.user.id
 				},
 			})
+
 			if (invoice) {
 				try {
 					const existingInvoice = await Customer.findOne({ stripeId: invoice.id })
@@ -42,7 +40,10 @@ router.post('/invoices/create', async (req, res) => {
 						customer: invoice.customer,
 						_user: req.user.id,
 						created: invoice.created,
-						currency: invoice.currency
+						currency: invoice.currency,
+						collectionMethod: invoice.collection_method,
+						lines: invoice.lines.data,
+						status: invoice.status
 					}).save()
 					res.send(newInvoice)
 				} catch (error) {
@@ -51,7 +52,6 @@ router.post('/invoices/create', async (req, res) => {
 			}
 		}
 	} catch (error) {
-		console.log(error.message)
 		res.status(200).send({ error: error.message })
 	}
 })
