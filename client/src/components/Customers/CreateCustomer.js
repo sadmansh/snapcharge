@@ -3,14 +3,10 @@ import { connect } from 'react-redux'
 import * as actions from '../../actions'
 
 class CreateCustomer extends Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			name: '',
-			email: '',
-			currency: ''
-		}
+	state = {
+		name: '',
+		email: '',
+		currency: ''
 	}
 
 	handleChange = (e) => {
