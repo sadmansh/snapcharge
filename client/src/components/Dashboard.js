@@ -18,11 +18,11 @@ class Dashboard extends Component {
 	render() {
 		return (
 			<div style={{ background: '#e6eaef' }}>
-				<Layout style={{ padding: '2rem 0', background: 'transparent', maxWidth: '1360px', marginLeft: 'auto', marginRight: 'auto' }}>
-					<Sider style={{ height: '100vh', background: 'transparent' }}>
+				<Layout style={{ background: 'transparent', maxWidth: '1360px', marginLeft: 'auto', marginRight: 'auto' }}>
+					<Sider style={{ paddingTop: '2rem', height: '100vh', background: 'transparent' }}>
 						<DashboardNavigation />						
 					</Sider>
-					<Content style={{ padding: '2rem 4rem' }}>
+					<Content style={{ padding: '4rem' }}>
 						<div className="dashboard-content">
 							<Route exact path="/dashboard/customers" component={Customers} />
 							<Route path="/dashboard/customers/:stripeId" component={CustomerDetails} />
