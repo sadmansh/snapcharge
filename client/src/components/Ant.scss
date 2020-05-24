@@ -4,6 +4,10 @@
 	background-color: #f7fafc;
 }
 
+.ant-table-tbody > tr.ant-table-row:hover {
+	cursor: pointer;
+}
+
 .ant-table-container table > thead > tr:first-child th:first-child:not(.ant-table-selection-column),
 .ant-table-container table > tbody > tr > td:first-child:not(.ant-table-selection-column) {
 	padding-left: 20px;
