@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import * as actions from '../../actions'
+import * as actions from '../../../actions'
 import { withRouter } from 'react-router-dom'
 import { Table, Button, Row, Col } from 'antd'
 import moment from 'moment'

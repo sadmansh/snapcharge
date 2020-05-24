@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
-import * as actions from '../actions'
+import * as actions from '../../actions'
 import { Layout } from 'antd'
 import './Dashboard.scss'
 
 import DashboardNavigation from './DashboardNavigation'
+import DashboardView from './DashboardView'
 import Customers from './Customers/Customers'
 import CustomerDetails from './Customers/CustomerDetails'
 import Invoices from './Invoices/Invoices'
@@ -25,6 +26,7 @@ class Dashboard extends Component {
 					</Sider>
 					<Content style={{ padding: '4rem' }}>
 						<div className="dashboard-content">
+							<Route exact path="/dashboard" component={DashboardView} />
 							<Route exact path="/dashboard/customers" component={Customers} />
 							<Route path="/dashboard/customers/:stripeId" component={CustomerDetails} />
 							<Route exact path="/dashboard/invoices" component={Invoices} />

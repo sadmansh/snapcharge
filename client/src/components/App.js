@@ -6,8 +6,8 @@ import 'antd/dist/antd.css'
 import './Ant.scss' 
 
 import Landing from './Landing'
-import Login from './Login'
-import Register from './Register'
+import Login from './Auth/Login'
+import Register from './Auth/Register'
 import Dashboard from './Dashboard'
 
 class App extends Component {
