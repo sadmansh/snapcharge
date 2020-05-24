@@ -9,6 +9,7 @@ import DashboardNavigation from './DashboardNavigation'
 import Customers from './Customers/Customers'
 import CustomerDetails from './Customers/CustomerDetails'
 import Invoices from './Invoices/Invoices'
+import InvoiceDetails from './Invoices/InvoiceDetails'
 import CreateInvoice from './Invoices/CreateInvoice'
 
 const { Content, Sider } = Layout
@@ -27,6 +28,7 @@ class Dashboard extends Component {
 							<Route exact path="/dashboard/customers" component={Customers} />
 							<Route path="/dashboard/customers/:stripeId" component={CustomerDetails} />
 							<Route exact path="/dashboard/invoices" component={Invoices} />
+							<Route path="/dashboard/invoices/:stripeId" component={InvoiceDetails} />
 							<Route exact path="/dashboard/invoices/create" component={CreateInvoice} />
 						</div>
 					</Content>

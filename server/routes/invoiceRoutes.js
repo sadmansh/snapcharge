@@ -68,4 +68,13 @@ router.get('/invoices', passport.authenticate('jwt', { session: false }), async 
 	}
 })
 
+router.get('/invoices/:stripeId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+	try {
+		const invoice = await Invoice.findOne({ stripeId: req.params.stripeId })
+		res.send(invoice)
+	} catch (error) {
+		res.status(200).send({ error: error.message })
+	}
+})
+
 module.exports = router
