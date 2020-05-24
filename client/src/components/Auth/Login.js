@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import * as actions from '../../actions'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 class Login extends Component {
 	constructor(props) {
@@ -22,7 +23,7 @@ class Login extends Component {
 	handleSubmit(e) {
 		e.preventDefault()
 		const { email, password } = this.state
-		if (email && password) this.props.loginUser(email, password)
+		if (email && password) this.props.loginUser(email, password, this.props.history)
 	}
 
 	render() {
@@ -40,4 +41,4 @@ class Login extends Component {
 	}
 }
 
-export default connect(null, actions)(Login)
+export default connect(null, actions)(withRouter(Login))

@@ -1,8 +1,7 @@
 import axios from 'axios'
-import history from '../utils/history'
 import { FETCH_USER, FETCH_COUNTRIES } from './types'
 
-export const loginUser = (email, password) => async dispatch => {
+export const loginUser = (email, password, history) => async dispatch => {
 	try {
 		const res = await axios.post('http://localhost:5000/api/auth/login', { email, password })
 		dispatch({ type: FETCH_USER, payload: res.data })
@@ -13,7 +12,7 @@ export const loginUser = (email, password) => async dispatch => {
 	}
 }
 
-export const registerUser = (user) => async dispatch => {
+export const registerUser = (user, history) => async dispatch => {
 	try {
 		const res = await axios.post('http://localhost:5000/api/auth/register', user)
 		dispatch({ type: FETCH_USER, payload: res.data })

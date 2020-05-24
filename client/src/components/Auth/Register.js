@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import * as actions from '../../actions'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 class Register extends Component {
 	constructor(props) {
@@ -27,7 +28,7 @@ class Register extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault()
 		const user = this.state
-		if (user) this.props.registerUser(user)
+		if (user) this.props.registerUser(user, this.props.history)
 	}
 	
 	renderCountriesSelect() {
@@ -62,4 +63,4 @@ const mapStateToProps = ({ countries }) => {
 	return { countries }
 }
 
-export default connect(mapStateToProps, actions)(Register)
+export default connect(mapStateToProps, actions)(withRouter(Register))
