@@ -24,6 +24,8 @@ class InvoiceList extends Component {
 	renderInvoices() {
 		const columns = [
 			{ key: 'amount', dataIndex: 'total', title: 'Amount', render: amount => <strong>{amount}</strong> },
+			{ key: 'status', dataIndex: 'status', title: 'Status', render: status => status.charAt(0).toUpperCase() + status.slice(1) },
+			{ key: 'number', dataIndex: 'number', title: 'Invoice Number' },
 			{ key: 'customer', dataIndex: ['customer', 'name'], title: 'Customer' },
 			{ key: 'due', dataIndex: 'dueDate', title: 'Due', render: timestamp => this.renderDate(timestamp, false) },
 			{ key: 'created', dataIndex: 'created', title: 'Created', render: timestamp => this.renderDate(timestamp) },

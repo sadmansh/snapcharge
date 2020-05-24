@@ -36,6 +36,10 @@ const InvoiceSchema = new Schema({
 		type: String,
 		required: false
 	},
+	number: {
+		type: String,
+		required: false,
+	},
 	subtotal: {
 		type: String,
 		required: false

@@ -44,6 +44,7 @@ router.post('/invoices/create', passport.authenticate('jwt', { session: false })
 				created: invoice.created,
 				currency: invoice.currency,
 				dueDate: invoice.due_date,
+				number: invoice.number,
 				collectionMethod: invoice.collection_method,
 				lines: invoice.lines.data,
 				status: invoice.status,
