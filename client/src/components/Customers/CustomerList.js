@@ -12,7 +12,7 @@ class CustomerList extends Component {
 	}
 
 	renderDate = (timestamp) => {
-		if (moment.unix(timestamp).year() == moment().year()) return moment.unix(timestamp).format('MMM D, h:mm A')
+		if (moment.unix(timestamp).year() === moment().year()) return moment.unix(timestamp).format('MMM D, h:mm A')
 		return moment.unix(timestamp).format('MMM D, YYYY, h:mm A')
 	}
 
