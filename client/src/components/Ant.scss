@@ -4,6 +4,11 @@
 	background-color: #f7fafc;
 }
 
+.ant-table-container table > thead > tr:first-child th:first-child:not(.ant-table-selection-column),
+.ant-table-container table > tbody > tr > td:first-child:not(.ant-table-selection-column) {
+	padding-left: 20px;
+}
+
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
 	background-color: transparent;
 }
