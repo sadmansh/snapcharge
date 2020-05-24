@@ -3,7 +3,11 @@ import React, { Component } from 'react'
 class DashboardView extends Component {
 	render() {
 		return (
-			<h1>Dashboard</h1>
+			<div className="dashboard-item">
+				<div className="box">
+					<h1>Dashboard</h1>
+				</div>
+			</div>
 		)
 	}
 }
