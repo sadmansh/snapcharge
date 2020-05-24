@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Field, FieldArray, reduxForm } from 'redux-form'
+import { Field, reduxForm } from 'redux-form'
 import InvoiceField from './InvoiceField'
 import formFields from './formFields'
 
