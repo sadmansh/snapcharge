@@ -7,7 +7,7 @@ import InvoiceList from './InvoiceList'
 class Invoices extends Component {
 	render() {
 		return (
-			<div>
+			<div className="dashboard-item">
 				<InvoiceList />
 			</div>
 		)
