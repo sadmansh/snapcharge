@@ -13,6 +13,7 @@ router.post('/customers/create', passport.authenticate('jwt', { session: false }
 			const customer = await stripe.customers.create({
 				email: req.body.email,
 				name: req.body.name,
+				currency: req.body.currency,
 				metadata: {
 					user: req.user.id
 				},
