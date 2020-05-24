@@ -56,4 +56,13 @@ router.post('/invoices/create', passport.authenticate('jwt', { session: false })
 	}
 })
 
+router.get('/invoices', passport.authenticate('jwt', { session: false }), async (req, res) => {
+	try {
+		const invoices = await Invoice.find({ _user: req.user.id })
+		res.send(invoices.reverse())
+	} catch (error) {
+		res.status(200).send({ error: error.message })
+	}
+})
+
 module.exports = router
