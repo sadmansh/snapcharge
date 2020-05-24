@@ -38,7 +38,7 @@ class CustomerList extends Component {
 
 	render() {
 		return (
-			<div className="AllCustomers">
+			<div className="customers-list">
 				<Row className="box">
 					<Col span={20}>
 						<h2 style={{ margin: 0 }}>All customers</h2>
