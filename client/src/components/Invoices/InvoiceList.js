@@ -23,7 +23,7 @@ class InvoiceList extends Component {
 
 	renderInvoices() {
 		const columns = [
-			{ key: 'amount', dataIndex: 'total', title: 'Amount', render: amount => <strong>{amount}</strong> },
+			{ key: 'amount', dataIndex: 'total', title: 'Amount', render: (amount, x) => <strong>{(amount / 100).toFixed(2)}</strong> },
 			{ key: 'status', dataIndex: 'status', title: 'Status', render: status => status.charAt(0).toUpperCase() + status.slice(1) },
 			{ key: 'number', dataIndex: 'number', title: 'Invoice Number' },
 			{ key: 'customer', dataIndex: ['customer', 'name'], title: 'Customer' },
