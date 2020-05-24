@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../../actions'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { Table, Button, Row, Col } from 'antd'
 import moment from 'moment'
 import getCurrencySymbol from '../../../utils/getCurrencySymbol'
@@ -54,7 +54,7 @@ class InvoiceList extends Component {
 						<h2 style={{ margin: 0 }}>All invoices</h2>
 					</Col>
 					<Col span={4} style={{ textAlign: 'right' }}>
-						<Button type="primary">Add invoice</Button>
+						<Button type="primary"><Link to="invoices/create">Add invoice</Link></Button>
 					</Col>
 				</Row>
 				{this.renderInvoices()}
