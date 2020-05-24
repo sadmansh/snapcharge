@@ -28,6 +28,10 @@ const InvoiceSchema = new Schema({
 		type: String,
 		required: true
 	},
+	dueDate: {
+		type: String,
+		required: false
+	},
 	currency: {
 		type: String,
 		required: false
