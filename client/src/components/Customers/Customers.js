@@ -6,11 +6,19 @@ import CreateCustomer from './CreateCustomer'
 import CustomerList from './CustomerList'
 
 class Customers extends Component {
+	state = {
+		modal: false
+	}
+
+	toggleAddCustomerModal = () => {
+		this.setState({ modal: !this.state.modal })
+	}
+
 	render() {
 		return (
-			<div>
-				<CreateCustomer />
-				<CustomerList />
+			<div className="dashboard-item">
+				<CreateCustomer modal={this.state.modal} toggleModal={this.toggleAddCustomerModal} />
+				<CustomerList toggleModal={this.toggleAddCustomerModal} />
 			</div>
 		)
 	}

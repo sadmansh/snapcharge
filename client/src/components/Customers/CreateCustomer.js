@@ -1,30 +1,29 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../actions'
-import { Form, Input, Select, Button } from 'antd'
+import { Form, Input, Select, Modal, Button, message } from 'antd'
 
 const { Option } = Select
 
 class CreateCustomer extends Component {
 	state = {
+		buttonLoading: false,
 		name: '',
 		email: '',
 		currency: ''
 	}
 
 	handleSubmit = (customer) => {
-		if (customer) this.props.createCustomer(customer)
+		this.setState({ buttonLoading: true })
+		if (customer) this.props.createCustomer(customer).then(res => {
+			console.log(res)
+			this.setState({ buttonLoading: false, })
+			this.props.toggleModal()
+			message.success('Customer created')
+		})
 	}
 
 	render() {
-		const layout = {
-			labelCol: { span: 2},
-			wrapperCol: { span: 4 }
-		}
-
-		const buttonLayout = {
-			wrapperCol: { offset: 2, span: 4 }
-		}
 
 		const currencyOptions = [
 			{ key: 'usd', label: 'US Dollar' },
@@ -33,9 +32,13 @@ class CreateCustomer extends Component {
 			{ key: 'gbp', label: 'British Pound' }
 		]
 
+		const { buttonLoading } = this.state
 		return (
-			<div className="CreateCustomer">
-				<Form {...layout} onFinish={this.handleSubmit}>
+			<Modal visible={this.props.modal} title="Add customer" onCancel={this.props.toggleModal} footer={[
+				<Button key="cancel" onClick={this.props.toggleModal}>Cancel</Button>,
+				<Button key="submit" form="createCustomer" type="primary" htmlType="submit" loading={buttonLoading}>Add customer</Button>
+			]}>
+				<Form id="createCustomer" onFinish={this.handleSubmit} layout="vertical" size="large">
 					<Form.Item name="name" label="Name" rules={[{ required: true }]}>
 						<Input />
 					</Form.Item>
@@ -51,11 +54,8 @@ class CreateCustomer extends Component {
 							})}
 						</Select>
 					</Form.Item>
-					<Form.Item {...buttonLayout}>
-						<Button type="primary" htmlType="submit">Add customer</Button>
-					</Form.Item>
 				</Form>
-			</div>
+			</Modal>
 		) 
 	}
 }

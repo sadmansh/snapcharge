@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../../actions'
-import { Table } from 'antd'
+import { Table, Button, Row, Col } from 'antd'
 import moment from 'moment'
 
 class CustomerList extends Component {
@@ -11,16 +11,21 @@ class CustomerList extends Component {
 		this.props.fetchCustomers()
 	}
 
+	renderDate = (timestamp) => {
+		if (moment.unix(timestamp).year() == moment().year()) return moment.unix(timestamp).format('MMM D, h:mm A')
+		return moment.unix(timestamp).format('MMM D, YYYY, h:mm A')
+	}
+
 	renderCustomers() {
 		const columns = [
 			{ key: 'name', dataIndex: 'name', title: 'Name' },
 			{ key: 'email', dataIndex: 'email', title: 'Email' },
-			{ key: 'created', dataIndex: 'created', title: 'Created', render: timestamp => moment.unix(timestamp).format('MMM D, YYYY, h:mm A') },
+			{ key: 'created', dataIndex: 'created', title: 'Created', render: timestamp => this.renderDate(timestamp) },
 		]
 		
 		if (this.props.customers) {
 			return (
-				<Table dataSource={this.props.customers} columns={columns} rowKey="_id" onRow={(record, rowIndex) => {
+				<Table dataSource={this.props.customers} columns={columns} rowKey="_id" pagination={{ defaultPageSize: 10 }} rowSelection={{ type: 'checkbox' }} onRow={(record, rowIndex) => {
 					return {
 						onClick: event => {
 							this.props.history.push(`customers/${record.stripeId}`)
@@ -34,7 +39,14 @@ class CustomerList extends Component {
 	render() {
 		return (
 			<div className="AllCustomers">
-				<h2>All customers</h2>
+				<Row className="box">
+					<Col span={20}>
+						<h2 style={{ margin: 0 }}>All customers</h2>
+					</Col>
+					<Col span={4} style={{ textAlign: 'right' }}>
+						<Button type="primary" onClick={this.props.toggleModal}>Add customer</Button>
+					</Col>
+				</Row>
 				{this.renderCustomers()}
 			</div>
 		)
