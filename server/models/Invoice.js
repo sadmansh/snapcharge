@@ -9,7 +9,7 @@ const InvoiceSchema = new Schema({
 		unique: true
 	},
 	customer: {
-		type: String,
+		type: Object,
 		required: true
 	},
 	lines: {
@@ -29,6 +29,14 @@ const InvoiceSchema = new Schema({
 		required: true
 	},
 	currency: {
+		type: String,
+		required: false
+	},
+	subtotal: {
+		type: String,
+		required: false
+	},
+	total: {
 		type: String,
 		required: false
 	},
