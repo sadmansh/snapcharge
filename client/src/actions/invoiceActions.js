@@ -4,12 +4,11 @@ import { FETCH_INVOICES, FETCH_INVOICE } from './types'
 
 export const createInvoice = invoice => async dispatch => {
 	invoice.customer = {
-		id: invoice.customer[0],
-		stripeId: invoice.customer[1],
+		id: invoice.customer.split(',')[0].trim(),
+		stripeId: invoice.customer.split(',')[1].trim(),
 		currency: invoice.currency
 	}
 	invoice.collectionMethod = 'send_invoice'
-
 	const res = await axios.post('http://localhost:5000/api/invoices/create', invoice, AuthHeaders)
 	console.log(res.data)
 }

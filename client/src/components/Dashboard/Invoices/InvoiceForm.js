@@ -39,7 +39,7 @@ class InvoiceForm extends Component {
 				return name.indexOf(input.toLowerCase()) >= 0 || email.indexOf(input.toLowerCase()) >= 0
 			}}>
 				{options.map(customer => (
-					<Option value={[customer._id, customer.stripeId]} key={customer._id}><strong>{customer.name}</strong> {customer.email}</Option>
+					<Option value={`${customer._id}, ${customer.stripeId}`} key={customer._id}><strong>{customer.name}</strong> {customer.email}</Option>
 				))}
 			</Field>
 		)
