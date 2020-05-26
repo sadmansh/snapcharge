@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../../actions'
-import { Form, Input, Select, Modal, Button, message } from 'antd'
-
-const { Option } = Select
+import { Form, Input, Modal, Button, message } from 'antd'
 
 class CreateCustomer extends Component {
 	state = {
