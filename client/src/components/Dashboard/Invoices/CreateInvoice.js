@@ -18,7 +18,7 @@ class CreateInvoice extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="dashboard-item create-invoice">
 				{this.renderContent()}
 			</div>
 		) 
