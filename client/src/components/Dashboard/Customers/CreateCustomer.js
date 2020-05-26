@@ -10,7 +10,6 @@ class CreateCustomer extends Component {
 		buttonLoading: false,
 		name: '',
 		email: '',
-		currency: ''
 	}
 
 	handleSubmit = (customer) => {
@@ -25,13 +24,6 @@ class CreateCustomer extends Component {
 
 	render() {
 
-		const currencyOptions = [
-			{ key: 'usd', label: 'US Dollar' },
-			{ key: 'eur', label: 'Euro' },
-			{ key: 'aud', label: 'Australian Dollar' },
-			{ key: 'gbp', label: 'British Pound' }
-		]
-
 		const { buttonLoading } = this.state
 		return (
 			<Modal visible={this.props.modal} title="Add customer" onCancel={this.props.toggleModal} footer={[
@@ -44,15 +36,6 @@ class CreateCustomer extends Component {
 					</Form.Item>
 					<Form.Item name="email" label="Email" rules={[{ required: true }]}>
 						<Input />
-					</Form.Item>
-					<Form.Item name="currency" label="Currency" rules={[{ required: true }]}>
-						<Select>
-							{currencyOptions.map(({ key, label }) => {
-								return (
-									<Option key={key} value={key}>{`${key.toUpperCase()} - ${label}`}</Option>
-								)
-							})}
-						</Select>
 					</Form.Item>
 				</Form>
 			</Modal>
