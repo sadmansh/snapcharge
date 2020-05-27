@@ -12,20 +12,35 @@ const SelectField = makeAntField(Select)
 
 class InvoiceForm extends Component {
 
+	state = {
+		customerSelected: false,
+		selectedCustomerCurrency: null,
+	}
+
+	componentDidMount() {
+		
+	}
+
 	renderCurrencies() {
-		const currencyOptions = [
+
+		let currencyOptions = [
 			{ key: 'usd', label: 'US Dollar' },
 			{ key: 'eur', label: 'Euro' },
 			{ key: 'aud', label: 'Australian Dollar' },
 			{ key: 'gbp', label: 'British Pound' }
 		]
+
+		if (this.state.selectedCustomerCurrency) {
+			currencyOptions = currencyOptions.filter(currency => currency.key === this.state.selectedCustomerCurrency)
+		}
+
 		return (
-			<Field name="currency" label="Currency" rules={[{ required: true }]} component={SelectField} placeholder="Select a currency" style={{ width: '35%' }}>
-				{currencyOptions.map(({ key, label }) => {
+			<Field name="currency" label="Currency" rules={[{ required: true }]} value={this.state.selectedCustomerCurrency} component={SelectField} placeholder={this.state.customerSelected ? 'Select a currency' : 'Select a customer first'} style={{ width: '35%' }} disabled={!this.state.customerSelected}>
+				{this.state.customerSelected ? currencyOptions.map(({key, label}) => {
 					return (
 						<Option key={key} value={key}>{`${key.toUpperCase()} - ${label}`}</Option>
 					)
-				})}
+				}) : ''}
 			</Field>
 		)
 	}
@@ -37,6 +52,10 @@ class InvoiceForm extends Component {
 				const name = option.children[0].props.children.toLowerCase()
 				const email = option.children[2].toLowerCase()
 				return name.indexOf(input.toLowerCase()) >= 0 || email.indexOf(input.toLowerCase()) >= 0
+			}} onSelect={(value, option) => {
+				const id = option.key
+				const selectedCustomer = options.find(option => option._id === id)
+				this.setState({ customerSelected: true, selectedCustomerCurrency: selectedCustomer.currency })
 			}}>
 				{options.map(customer => (
 					<Option value={`${customer._id}, ${customer.stripeId}`} key={customer._id}><strong>{customer.name}</strong> {customer.email}</Option>
@@ -50,10 +69,10 @@ class InvoiceForm extends Component {
 			{fields.map((item, index) => (
 				<Row key={index} gutter={16}>
 					<Col span={18}>
-						<Field name={`${item}.description`} type="text" component={InputField} label={index === 0 ? 'Description' : undefined} />
+						<Field name={`${item}.description`} type="text" rules={[{ required: true }]} component={InputField} label={index === 0 ? 'Description' : undefined} />
 					</Col>
 					<Col span={6}>
-						<Field name={`${item}.amount`} type="text" component={InputField} label={index === 0 ? 'Amount' : undefined} />
+						<Field name={`${item}.amount`} type="text" rules={[{ required: true }]} component={InputField} label={index === 0 ? 'Amount' : undefined} />
 					</Col>
 				</Row>
 			))}
