@@ -23,7 +23,8 @@ const CustomerSchema = new Schema({
 	},
 	currency: {
 		type: String,
-		required: false
+		required: false,
+		default: null
 	},
 	_user: {
 		type: Schema.Types.ObjectId,

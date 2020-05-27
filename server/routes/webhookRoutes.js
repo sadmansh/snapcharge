@@ -19,7 +19,21 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 
 	switch (event.type) {
 		case 'customer.updated':
-			console.log('Webhook received for customer.updated')
+			// Update customer currency when an invoice is created
+			const customer = event.data.object
+			if (customer.currency) {
+				Customer.updateOne({
+					stripeId: customer.id,
+				}, {
+					$set: { currency: customer.currency }
+				}, (error, doc) => {
+					if (error) {
+						console.log(error)
+					} else {
+						console.log(`Updated currency for customer ${customer.name}`)
+					}
+				})
+			}
 			break
 		default:
 			return res.status(400).end()
