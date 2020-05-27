@@ -20,8 +20,16 @@ app.use(cors({
 	credentials: true
 }))
 app.use(morgan('dev'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use((req, res, next) => {
+	if (req.originalUrl === '/api/hooks') next()
+	else bodyParser.json()(req, res, next)
+})
+app.use((req, res, next) => {
+	if (req.originalUrl === '/api/hooks') next()
+	else bodyParser.urlencoded({ extended: true })(req, res, next)
+})
+
 app.use(passport.initialize())
 app.use(passport.session())
 
