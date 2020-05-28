@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../../actions'
 import { withRouter, Link } from 'react-router-dom'
-import { Table, Button, Row, Col } from 'antd'
+import { Table, Button, Tag, Row, Col } from 'antd'
 import moment from 'moment'
 import getCurrencySymbol from '../../../utils/getCurrencySymbol'
 
@@ -23,10 +23,24 @@ class InvoiceList extends Component {
 		
 	}
 
+	getStatusColor = status => {
+		switch (status) {
+			case 'open':
+				return 'processing'
+			case 'paid':
+				return 'success'
+			case 'uncollectible':
+			case 'void':
+				return 'warning'
+			default:
+				return 'default'
+		}
+	}
+
 	renderInvoices() {
 		const columns = [
 			{ key: 'amount', dataIndex: 'total', title: 'Amount', render: (amount, record) => <strong>{getCurrencySymbol(record.currency)}{(amount / 100).toFixed(2)}</strong> },
-			{ key: 'status', dataIndex: 'status', title: 'Status', render: status => status.charAt(0).toUpperCase() + status.slice(1) },
+			{ key: 'status', dataIndex: 'status', title: 'Status', render: status => <Tag color={this.getStatusColor(status)}>{status.charAt(0).toUpperCase() + status.slice(1)}</Tag> },
 			{ key: 'number', dataIndex: 'number', title: 'Invoice Number' },
 			{ key: 'customer', dataIndex: ['customer', 'name'], title: 'Customer' },
 			{ key: 'due', dataIndex: 'dueDate', title: 'Due', render: timestamp => this.renderDate(timestamp, false) },
