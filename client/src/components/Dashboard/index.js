@@ -8,6 +8,7 @@ import './Dashboard.scss'
 import DashboardNavigation from './DashboardNavigation'
 import DashboardView from './DashboardView'
 import Customers from './Customers/Customers'
+import Payments from './Payments/Payments'
 import CustomerDetails from './Customers/CustomerDetails'
 import Invoices from './Invoices/Invoices'
 import InvoiceDetails from './Invoices/InvoiceDetails'
@@ -27,6 +28,7 @@ class Dashboard extends Component {
 					<Content style={{ padding: '4rem' }}>
 						<div className="dashboard-content">
 							<Route exact path="/dashboard" component={DashboardView} />
+							<Route exact path="/dashboard/payments" component={Payments} />
 							<Route exact path="/dashboard/customers" component={Customers} />
 							<Route path="/dashboard/customers/:stripeId" component={CustomerDetails} />
 							<Route exact path="/dashboard/invoices" component={Invoices} />
