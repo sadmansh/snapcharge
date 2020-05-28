@@ -26,14 +26,23 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 					stripeId: customer.id,
 				}, {
 					$set: { currency: customer.currency }
-				}, (error, doc) => {
-					if (error) {
-						console.log(error)
-					} else {
-						console.log(`Updated currency for customer ${customer.name}`)
-					}
+				}, (error, res) => {
+					if (error) console.log(error)
+					else console.log(`Updated currency for customer ${customer.name}`)
 				})
 			}
+			break
+		case 'invoice.payment_succeeded':
+			// Update invoice status
+			const invoice = event.data.object
+			Invoice.updateOne({
+				_user: invoice.metadata.user
+			}, {
+				$set: { status: invoice.status }
+			}, (error, res) => {
+				if (error) console.log(error)
+				else console.log(`Updated invoice status to "${invoice.status}" for invoice ID ${invoice.id}`)
+			})
 			break
 		default:
 			return res.status(400).end()
