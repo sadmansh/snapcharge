@@ -36,7 +36,7 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 			// Update invoice status
 			const invoice = event.data.object
 			Invoice.updateOne({
-				_user: invoice.metadata.user
+				stripeId: invoice.id
 			}, {
 				$set: { status: invoice.status }
 			}, (error, res) => {
