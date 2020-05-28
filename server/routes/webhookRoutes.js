@@ -33,6 +33,7 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 			}
 			break
 		case 'invoice.payment_succeeded':
+		case 'invoice.sent':
 			// Update invoice status
 			const invoice = event.data.object
 			Invoice.updateOne({
