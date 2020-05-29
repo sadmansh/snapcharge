@@ -35,12 +35,7 @@ router.post('/invoices/create', passport.authenticate('jwt', { session: false })
 			if (existingInvoice) return res.status(200).send({ error: 'Invoice already exists.' })
 			const newInvoice = await new Invoice({
 				stripeId: invoice.id,
-				customer: {
-					id: req.body.customer.id,
-					stripeId: invoice.customer,
-					name: invoice.customer_name,
-					email: invoice.customer_email
-				},
+				_customer: req.body.customer.id,
 				_user: req.user.id,
 				created: invoice.created,
 				currency: invoice.currency,

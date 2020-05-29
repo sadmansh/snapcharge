@@ -8,10 +8,6 @@ const InvoiceSchema = new Schema({
 		index: true,
 		unique: true
 	},
-	customer: {
-		type: Object,
-		required: true
-	},
 	lines: {
 		type: Array,
 		required: false
@@ -47,6 +43,10 @@ const InvoiceSchema = new Schema({
 	total: {
 		type: Number,
 		required: false
+	},
+	_customer: {
+		type: Schema.Types.ObjectId,
+		ref: 'Customer'
 	},
 	_user: {
 		type: Schema.Types.ObjectId,
