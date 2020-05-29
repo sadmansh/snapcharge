@@ -25,7 +25,8 @@ router.post('/invoices/create', passport.authenticate('jwt', { session: false })
 			days_until_due: req.body.daysUntilDue,
 			auto_advance: true,
 			metadata: {
-				user: req.user.id
+				user: req.user.id,
+				customer: req.body.customer.id
 			},
 		})
 
