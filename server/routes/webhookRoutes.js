@@ -33,10 +33,10 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 				})
 			}
 			break
-		case 'invoice.payment_succeeded':
+
 		case 'invoice.sent':
-			// Update invoice status
 			const invoice = event.data.object
+			// Update invoice status
 			Invoice.updateOne({
 				stripeId: invoice.id
 			}, {
@@ -45,11 +45,8 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 				if (error) console.error(error)
 				else console.log(`Updated invoice status to "${invoice.status.toUpperCase()}" for invoice ID ${invoice.id}`)
 			})
-			break
 
-		case 'invoice.sent':
 			// Create payment instance
-			const invoice = event.data.object
 			const existingPayment = await Payment.findOne({ _invoice: invoice.id })
 			if (existingPayment) console.error(`Payment ${existingPayment.id} already existings for invoice ${invoice.id}`)
 			const payment = await new Payment({
@@ -62,8 +59,18 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 			break
 
 		case 'invoice.payment_succeeded':
-			// Update payment status
 			const invoice = event.data.object
+			// Update invoice status
+			Invoice.updateOne({
+				stripeId: invoice.id
+			}, {
+				$set: { status: invoice.status }
+			}, (error, res) => {
+				if (error) console.error(error)
+				else console.log(`Updated invoice status to "${invoice.status.toUpperCase()}" for invoice ID ${invoice.id}`)
+			})
+
+			// Update payment status
 			Payment.updateOne({
 				_invoice: invoice.id
 			}, {
