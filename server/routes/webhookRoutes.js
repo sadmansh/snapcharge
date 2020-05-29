@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const Invoice = mongoose.model('invoices')
 const Customer = mongoose.model('customers')
+const Payment = mongoose.model('payments')
 
 router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) => {
 	const sig = req.headers['stripe-signature']
@@ -13,7 +14,7 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 	try {
 		event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret)
 	} catch (error) {
-		console.log(`Webhook error: ${error.message}`)
+		console.error(`Webhook error: ${error.message}`)
 		res.status(400).send(`Webhook error: ${error.message}`)
 	}
 
@@ -27,7 +28,7 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 				}, {
 					$set: { currency: customer.currency }
 				}, (error, res) => {
-					if (error) console.log(error)
+					if (error) console.error(error)
 					else console.log(`Updated currency for customer ${customer.name}`)
 				})
 			}
@@ -41,10 +42,38 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 			}, {
 				$set: { status: invoice.status }
 			}, (error, res) => {
-				if (error) console.log(error)
-				else console.log(`Updated invoice status to "${invoice.status}" for invoice ID ${invoice.id}`)
+				if (error) console.error(error)
+				else console.log(`Updated invoice status to "${invoice.status.toUpperCase()}" for invoice ID ${invoice.id}`)
 			})
 			break
+
+		case 'invoice.sent':
+			// Create payment instance
+			const invoice = event.data.object
+			const existingPayment = await Payment.findOne({ _invoice: invoice.id })
+			if (existingPayment) console.error(`Payment ${existingPayment.id} already existings for invoice ${invoice.id}`)
+			const payment = await new Payment({
+				currency: invoice.currency,
+				total: invoice.total,
+				_customer: invoice.metadata.customer,
+				_user: invoice.metadata.user
+			}).save()
+			if (payment) console.log(`Created new payment ${payment.id} for invoice ID ${invoice.id}`)
+			break
+
+		case 'invoice.payment_succeeded':
+			// Update payment status
+			const invoice = event.data.object
+			Payment.updateOne({
+				_invoice: invoice.id
+			}, {
+				$set: { status: 'paid' }
+			} (error, res) => {
+				if (error) console.error(error)
+				else console.log(`Updated payment status to "PAID" for invoice ID ${invoice.id}`)
+			})
+			break
+
 		default:
 			return res.status(400).end()
 	}
