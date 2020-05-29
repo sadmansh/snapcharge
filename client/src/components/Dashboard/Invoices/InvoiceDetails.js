@@ -1,17 +1,23 @@
 import React, { Component } from 'react'
-import * as actions from '../../../actions'
-import { connect } from 'react-redux'
+import axios from 'axios'
+import AuthHeaders from '../../../utils/AuthHeaders'
 import { Divider } from 'antd'
 
 class InvoiceDetails extends Component {
+	state = {
+		invoice: null,
+		customer: null
+	}
 
-	componentDidMount() {
-		this.props.fetchInvoice(this.props.stripeId)
+	async componentDidMount() {
+		const invoice = await axios.get(`http://localhost:5000/api/invoices/${this.props.match.params.id}`, AuthHeaders)
+		const customer = await axios.get(`http://localhost:5000/api/customers/${invoice.data._customer}`, AuthHeaders)
+		this.setState({ invoice: invoice.data, customer: customer.data })
 	}
 
 	renderInvoice() {
-		if (this.props.invoice) {
-			const { invoice } = this.props
+		const { invoice, customer } = this.state
+		if (invoice && customer) {
 			return (
 				<div>
 					<div className="box">
@@ -19,8 +25,8 @@ class InvoiceDetails extends Component {
 						<Divider />
 						<div className="invoice-customer">
 							<h2>Customer</h2>
-							<div><strong>{invoice.customer.name}</strong></div>
-							<div>{invoice.customer.email}</div>
+							<div><strong>{customer.name}</strong></div>
+							<div>{customer.email}</div>
 						</div>
 						<Divider />
 						<div className="invoice-items">
@@ -31,7 +37,7 @@ class InvoiceDetails extends Component {
 
 				</div>
 			)
-		}			
+		}
 	}
 
 	render() {
@@ -43,8 +49,4 @@ class InvoiceDetails extends Component {
 	}
 }
 
-const mapStateToProps = ({ invoice }, ownProps) => {
-	return { invoice, stripeId: ownProps.match.params.stripeId }
-}
-
-export default connect(mapStateToProps, actions)(InvoiceDetails)
+export default InvoiceDetails

@@ -10,6 +10,7 @@ class InvoiceList extends Component {
 	
 	componentDidMount() {
 		this.props.fetchInvoices()
+		this.props.fetchCustomers()
 	}
 
 	renderDate = (timestamp, showTime = true) => {
@@ -42,7 +43,11 @@ class InvoiceList extends Component {
 			{ key: 'amount', dataIndex: 'total', title: 'Amount', render: (amount, record) => <strong>{getCurrencySymbol(record.currency)}{(amount / 100).toFixed(2)}</strong> },
 			{ key: 'status', dataIndex: 'status', title: 'Status', render: status => <Tag color={this.getStatusColor(status)}>{status.charAt(0).toUpperCase() + status.slice(1)}</Tag> },
 			{ key: 'number', dataIndex: 'number', title: 'Invoice Number' },
-			{ key: 'customer', dataIndex: ['customer', 'name'], title: 'Customer' },
+			{ key: 'customer', dataIndex: '_customer', title: 'Customer', render: _customer => {
+				if (this.props.customers) {
+					return this.props.customers.find(customer => customer._id === _customer).name
+				}
+			} },
 			{ key: 'due', dataIndex: 'dueDate', title: 'Due', render: timestamp => this.renderDate(timestamp, false) },
 			{ key: 'created', dataIndex: 'created', title: 'Created', render: timestamp => this.renderDate(timestamp) },
 		]
@@ -52,7 +57,7 @@ class InvoiceList extends Component {
 				<Table dataSource={this.props.invoices} columns={columns} rowKey="_id" pagination={{ defaultPageSize: 10 }} onRow={(record, rowIndex) => {
 					return {
 						onClick: event => {
-							this.props.history.push(`invoices/${record.stripeId}`)
+							this.props.history.push(`invoices/${record._id}`)
 						}
 					}
 				}} />
@@ -77,8 +82,8 @@ class InvoiceList extends Component {
 	}
 }
 
-const mapStateToProps = ({ invoices }) => {
-	return { invoices }
+const mapStateToProps = ({ invoices, customers }) => {
+	return { invoices, customers }
 }
 
 export default connect(mapStateToProps, actions)(withRouter(InvoiceList))

@@ -30,9 +30,9 @@ class Dashboard extends Component {
 							<Route exact path="/dashboard" component={DashboardView} />
 							<Route exact path="/dashboard/payments" component={Payments} />
 							<Route exact path="/dashboard/customers" component={Customers} />
-							<Route path="/dashboard/customers/:stripeId" component={CustomerDetails} />
+							<Route path="/dashboard/customers/:id" component={CustomerDetails} />
 							<Route exact path="/dashboard/invoices" component={Invoices} />
-							<Route path="/dashboard/invoices/:stripeId" component={InvoiceDetails} />
+							<Route path="/dashboard/invoices/:id" component={InvoiceDetails} />
 							<Route exact path="/dashboard/invoices/create" component={CreateInvoice} />
 						</div>
 					</Content>

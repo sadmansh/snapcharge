@@ -1,6 +1,6 @@
 import axios from 'axios'
 import AuthHeaders from '../utils/AuthHeaders'
-import { FETCH_INVOICES, FETCH_INVOICE } from './types'
+import { FETCH_INVOICES } from './types'
 
 export const createInvoice = invoice => async dispatch => {
 	invoice.customer = {
@@ -16,9 +16,4 @@ export const createInvoice = invoice => async dispatch => {
 export const fetchInvoices = () => async dispatch => {
 	const res = await axios.get('http://localhost:5000/api/invoices', AuthHeaders)
 	dispatch({ type: FETCH_INVOICES, payload: res.data })
-}
-
-export const fetchInvoice = stripeId => async dispatch => {
-	const res = await axios.get(`http://localhost:5000/api/invoices/${stripeId}`, AuthHeaders)
-	dispatch({ type: FETCH_INVOICE, payload: res.data })
 }

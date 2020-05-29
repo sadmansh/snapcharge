@@ -47,6 +47,7 @@ router.post('/invoices/create', passport.authenticate('jwt', { session: false })
 				subtotal: invoice.subtotal,
 				total: invoice.total
 			}).save()
+			const updateInvoiceMeta = await stripe.invoices.update(invoice.id, { metadata: { invoice: newInvoice.id } })
 			res.send(newInvoice)
 		}
 	} catch (error) {
@@ -64,9 +65,9 @@ router.get('/invoices', passport.authenticate('jwt', { session: false }), async 
 	}
 })
 
-router.get('/invoices/:stripeId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.get('/invoices/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
 	try {
-		const invoice = await Invoice.findOne({ stripeId: req.params.stripeId })
+		const invoice = await Invoice.findById(req.params.id)
 		res.send(invoice)
 	} catch (error) {
 		res.status(200).send({ error: error.message })

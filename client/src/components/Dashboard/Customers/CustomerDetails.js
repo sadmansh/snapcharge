@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
-import * as actions from '../../../actions'
-import { connect } from 'react-redux'
+import axios from 'axios'
+import AuthHeaders from '../../../utils/AuthHeaders'
 
 class CustomerDetails extends Component {
+	state = {
+		customer: null
+	}
 
-	componentDidMount() {
-		this.props.fetchCustomers()
+	async componentDidMount() {
+		const customer = await axios.get(`http://localhost:5000/api/customers/${this.props.match.params.id}`, AuthHeaders)
+		this.setState({ customer: customer.data })
 	}
 
 	renderCustomer() {
-		if (this.props.customers) {
-			const { match: { params: { stripeId } } } = this.props
-			let customer = this.props.customers.find(customer => {
-				return customer.stripeId === stripeId
-			})
+		const { customer } = this.state
+		if (customer) {
 			return (
 				<div>
 					{customer.name}
@@ -31,8 +32,4 @@ class CustomerDetails extends Component {
 	}
 }
 
-const mapStateToProps = ({ customers }) => {
-	return { customers }
-}
-
-export default connect(mapStateToProps, actions)(CustomerDetails)
+export default CustomerDetails

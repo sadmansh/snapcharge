@@ -28,7 +28,7 @@ class CustomerList extends Component {
 				<Table dataSource={this.props.customers} columns={columns} rowKey="_id" pagination={{ defaultPageSize: 10 }} rowSelection={{ type: 'checkbox' }} onRow={(record, rowIndex) => {
 					return {
 						onClick: event => {
-							this.props.history.push(`customers/${record.stripeId}`)
+							this.props.history.push(`customers/${record._id}`)
 						}
 					}
 				}} />
