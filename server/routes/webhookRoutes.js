@@ -52,7 +52,7 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), async (req, 
 			if (existingPayment) console.error(`Payment ${existingPayment.id} already existings for invoice ${invoice.id}`)
 			const payment = await new Payment({
 				currency: invoice.currency,
-				total: invoice.total,
+				subtotal: invoice.total,
 				_customer: invoice.metadata.customer,
 				_user: invoice.metadata.user,
 				_invoice: invoice.metadata.invoice
