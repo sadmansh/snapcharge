@@ -6,8 +6,9 @@ const mongoose = require('mongoose')
 const Invoice = mongoose.model('invoices')
 const Customer = mongoose.model('customers')
 const Payment = mongoose.model('payments')
+const User = mongoose.model('users')
 
-router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) => {
+router.post('/hooks', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
 	const sig = req.headers['stripe-signature']
 	const endpointSecret = keys.stripeEndpointSecret
 	let event
@@ -19,11 +20,11 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 	}
 
 	switch (event.type) {
-		case 'customer.updated':
+		case 'customer.updated': {
 			// Update customer currency when an invoice is created
 			const customer = event.data.object
 			if (customer.currency) {
-				Customer.updateOne({
+				await Customer.updateOne({
 					stripeId: customer.id,
 				}, {
 					$set: { currency: customer.currency }
@@ -33,11 +34,11 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 				})
 			}
 			break
-
-		case 'invoice.sent':
+		}
+		case 'invoice.sent': {
 			const invoice = event.data.object
 			// Update invoice status
-			Invoice.updateOne({
+			await Invoice.updateOne({
 				stripeId: invoice.id
 			}, {
 				$set: { status: invoice.status }
@@ -47,21 +48,22 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 			})
 
 			// Create payment instance
-			const existingPayment = await Payment.findOne({ _invoice: invoice.id })
+			const existingPayment = await Payment.findOne({ _invoice: invoice.metadata.invoice })
 			if (existingPayment) console.error(`Payment ${existingPayment.id} already existings for invoice ${invoice.id}`)
 			const payment = await new Payment({
 				currency: invoice.currency,
 				total: invoice.total,
 				_customer: invoice.metadata.customer,
-				_user: invoice.metadata.user
+				_user: invoice.metadata.user,
+				_invoice: invoice.metadata.invoice
 			}).save()
 			if (payment) console.log(`Created new payment ${payment.id} for invoice ID ${invoice.id}`)
 			break
-
-		case 'invoice.payment_succeeded':
+		}
+		case 'invoice.payment_succeeded': {
 			const invoice = event.data.object
 			// Update invoice status
-			Invoice.updateOne({
+			await Invoice.updateOne({
 				stripeId: invoice.id
 			}, {
 				$set: { status: invoice.status }
@@ -71,18 +73,19 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), (req, res) =
 			})
 
 			// Update payment status
-			Payment.updateOne({
-				_invoice: invoice.id
+			await Payment.updateOne({
+				_invoice: invoice.metadata.invoice
 			}, {
 				$set: { status: 'paid' }
-			} (error, res) => {
+			}, (error, res) => {
 				if (error) console.error(error)
 				else console.log(`Updated payment status to "PAID" for invoice ID ${invoice.id}`)
 			})
 			break
-
-		default:
+		}
+		default: {
 			return res.status(400).end()
+		}
 	}
 	res.status(200).json({ received: true })
 })
