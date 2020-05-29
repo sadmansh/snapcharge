@@ -17,15 +17,15 @@ const PaymentSchema = new Schema({
 	},
 	stripeFees: {
 		type: Number,
-		required: true
+		required: false
 	},
 	fees: {
 		type: Number,
-		required: true
+		required: false
 	},
 	totalFees: {
 		type: Number,
-		required: true
+		required: false
 	},
 	_customer: {
 		type: Schema.Types.ObjectId,
