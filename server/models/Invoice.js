@@ -41,11 +41,11 @@ const InvoiceSchema = new Schema({
 		required: false,
 	},
 	subtotal: {
-		type: String,
+		type: Number,
 		required: false
 	},
 	total: {
-		type: String,
+		type: Number,
 		required: false
 	},
 	_user: {
