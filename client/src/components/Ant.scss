@@ -30,6 +30,10 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 8px;
 }
 
+.ant-table-footer {
+	padding: 1rem .5rem 1rem 1.25rem;
+}
+
 .ant-form-vertical .ant-form-item-label, .ant-col-24.ant-form-item-label, .ant-col-xl-24.ant-form-item-label {
 	padding: 0;
 }
@@ -47,3 +51,6 @@ h1, h2, h3, h4, h5, h6 {
 	line-height: 1.5;
 }
 
+.ant-descriptions-item-label {
+	font-weight: 600;
+}
