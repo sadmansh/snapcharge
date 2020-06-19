@@ -9,7 +9,7 @@ const PaymentSchema = new Schema({
 	status: {
 		type: String,
 		required: true,
-		default: 'open'
+		default: 'unpaid'
 	},
 	subtotal: {
 		type: Number,

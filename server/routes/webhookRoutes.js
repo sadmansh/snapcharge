@@ -46,18 +46,6 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), async (req, 
 				if (error) console.error(error)
 				else console.log(`Updated invoice status to "${invoice.status.toUpperCase()}" for invoice ID ${invoice.id}`)
 			})
-
-			// Create payment instance
-			const existingPayment = await Payment.findOne({ _invoice: invoice.metadata.invoice })
-			if (existingPayment) console.error(`Payment ${existingPayment.id} already existings for invoice ${invoice.id}`)
-			const payment = await new Payment({
-				currency: invoice.currency,
-				subtotal: invoice.total,
-				_customer: invoice.metadata.customer,
-				_user: invoice.metadata.user,
-				_invoice: invoice.metadata.invoice
-			}).save()
-			if (payment) console.log(`Created new payment ${payment.id} for invoice ID ${invoice.id}`)
 			break
 		}
 		case 'invoice.payment_succeeded': {
@@ -72,15 +60,17 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), async (req, 
 				else console.log(`Updated invoice status to "${invoice.status.toUpperCase()}" for invoice ID ${invoice.id}`)
 			})
 
-			// Update payment status
-			await Payment.updateOne({
+			// Create payment instance
+			const existingPayment = await Payment.findOne({ _invoice: invoice.metadata.invoice })
+			if (existingPayment) console.error(`Payment ${existingPayment.id} already existings for invoice ${invoice.id}`)
+			const payment = await new Payment({
+				currency: invoice.currency,
+				subtotal: invoice.total,
+				_customer: invoice.metadata.customer,
+				_user: invoice.metadata.user,
 				_invoice: invoice.metadata.invoice
-			}, {
-				$set: { status: 'paid' }
-			}, (error, res) => {
-				if (error) console.error(error)
-				else console.log(`Updated payment status to "PAID" for invoice ID ${invoice.id}`)
-			})
+			}).save()
+			if (payment) console.log(`Created new payment ${payment.id} for invoice ID ${invoice.id}`)
 			break
 		}
 		default: {
