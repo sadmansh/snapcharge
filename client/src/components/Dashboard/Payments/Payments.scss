@@ -1,0 +1,29 @@
+.payments {
+	.payment-cards {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		margin: 1rem 0;
+
+		.card {
+			flex-basis: 24%;
+			padding: 1.5rem;
+			border-radius: 6px;
+		}
+
+		.card-title {
+			display: block;
+			text-transform: uppercase;
+			letter-spacing: .5px;
+			color: #fff;
+			font-weight: 300;
+		}
+
+		.card-data {
+			display: block;
+			color: #fff;
+			font-size: 1.5rem;
+			font-weight: 300;
+		}
+	}
+}
