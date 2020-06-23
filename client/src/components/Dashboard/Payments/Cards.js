@@ -26,7 +26,7 @@ class Cards extends Component {
 				</div>
 				<div className="card" style={{ backgroundImage: 'linear-gradient(to right, #172a4c, #131539)' }}>
 					<span className="card-title">Total payouts</span>
-					<span className="card-data">$5600</span>
+					<span className="card-data">{this.renderAmount(data.paidout)}</span>
 				</div>
 			</div>
 		)

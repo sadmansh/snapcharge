@@ -18,12 +18,16 @@ router.get('/payments/aggregate', passport.authenticate('jwt', { session: false 
 				_id: '$status',
 				total: {
 					$sum: '$subtotal'
+				},
+				paidout: {
+					$sum: '$total'
 				}
 			}
 		}
 		])
 		const data = {}
 		totals.map((record, index) => {
+			if (record._id === 'paidout') data[totals[index]._id] = totals[index].paidout
 			data[totals[index]._id] = totals[index].total
 		})
 		res.send(data)
