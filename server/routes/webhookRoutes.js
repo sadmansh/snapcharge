@@ -76,10 +76,10 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), async (req, 
 			await Payment.updateOne({
 				_invoice: invoice.metadata.invoice
 			}, {
-				$set: { status: 'paid' }
+				$set: { status: 'received' }
 			}, (error, res) => {
 				if (error) console.error(error)
-				else console.log(`Updated payment status to "PAID" for invoice ID ${invoice.id}`)
+				else console.log(`Updated payment status to "RECEIVED" for invoice ID ${invoice.id}`)
 			})
 			break
 		}
