@@ -11,19 +11,22 @@ router.get('/payments/aggregate', passport.authenticate('jwt', { session: false 
 		{
 			$match: {
 				_user: req.user._id,
-				status: 'unpaid'
 			}
 		},
 		{
 			$group: {
-				_id: null,
-				unpaid: {
+				_id: '$status',
+				total: {
 					$sum: '$subtotal'
-				} 
+				}
 			}
 		}
 		])
-		res.send(totals)
+		const data = {}
+		totals.map((record, index) => {
+			data[totals[index]._id] = totals[index].total
+		})
+		res.send(data)
 	} catch (error) {
 		res.status(200).send({ error: error.message })
 	}
