@@ -9,29 +9,22 @@ router.get('/payments/aggregate', passport.authenticate('jwt', { session: false 
 	try {
 		const totals = await Payment.aggregate([
 		{
-			$match: {
-				_user: req.user._id,
-			}
-		},
-		{
 			$group: {
 				_id: '$status',
-				total: {
-					$sum: '$subtotal'
-				},
-				paidout: {
-					$sum: '$total'
-				}
+				total: { $sum: { $cond: [ { $eq: ['$status', 'paidout'] }, '$total', '$subtotal' ] } },
+				latest: { $last: { $cond: [{ $eq: ['$status', 'paidout'] }, '$$ROOT', '$$REMOVE' ] } }
 			}
-		}
+		},
+		{ $addFields: { latest: { $ifNull: ['$latest', '$$REMOVE' ] } } }
 		])
 		const data = {}
-		totals.map((record, index) => {
-			if (record._id === 'paidout') data[totals[index]._id] = totals[index].paidout
-			data[totals[index]._id] = totals[index].total
+		totals.map((item, index) => {
+			if (['unpaid', 'received', 'paidout'].includes(item._id)) data[item._id] = item.total
+			if (item._id === 'paidout') data.latest = item.latest
 		})
 		res.send(data)
 	} catch (error) {
+		console.error(error)
 		res.status(200).send({ error: error.message })
 	}
 })
