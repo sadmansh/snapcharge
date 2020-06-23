@@ -3,6 +3,7 @@ import authReducer from './authReducer'
 import countriesReducer from './countriesReducer'
 import customerReducer from './customerReducer'
 import invoiceReducer from './invoiceReducer'
+import paymentReducer from './paymentReducer'
 import { reducer as formReducer } from 'redux-form'
 
 export default combineReducers({
@@ -10,5 +11,6 @@ export default combineReducers({
 	countries: countriesReducer,
 	customers: customerReducer,
 	invoices: invoiceReducer,
+	payments: paymentReducer,
 	form: formReducer
 })
