@@ -1,5 +1,7 @@
 export const FETCH_USER = 'fetch_user'
 export const FETCH_COUNTRIES = 'fetch_countries'
 export const FETCH_CUSTOMERS = 'fetch_customers'
+export const CREATE_CUSTOMER = 'create_customer'
 export const FETCH_INVOICES = 'fetch_invoices'
+export const CREATE_INVOICE = 'create_invoice'
 export const FETCH_PAYMENTS = 'fetch_payments'

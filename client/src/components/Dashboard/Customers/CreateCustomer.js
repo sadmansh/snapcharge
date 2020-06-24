@@ -13,7 +13,6 @@ class CreateCustomer extends Component {
 	handleSubmit = (customer) => {
 		this.setState({ buttonLoading: true })
 		if (customer) this.props.createCustomer(customer).then(res => {
-			console.log(res)
 			this.setState({ buttonLoading: false, })
 			this.props.toggleModal()
 			message.success('Customer created')

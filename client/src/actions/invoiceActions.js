@@ -1,6 +1,6 @@
 import axios from 'axios'
 import AuthHeaders from '../utils/AuthHeaders'
-import { FETCH_INVOICES } from './types'
+import { FETCH_INVOICES, CREATE_INVOICE } from './types'
 
 export const createInvoice = invoice => async dispatch => {
 	invoice.customer = {
@@ -10,7 +10,7 @@ export const createInvoice = invoice => async dispatch => {
 	}
 	invoice.collectionMethod = 'send_invoice'
 	const res = await axios.post('http://localhost:5000/api/invoices/create', invoice, AuthHeaders)
-	console.log(res.data)
+	dispatch({ type: CREATE_INVOICE, payload: res.data })
 }
 
 export const fetchInvoices = () => async dispatch => {
