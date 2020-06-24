@@ -1,28 +1,23 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { reduxForm } from 'redux-form'
 import InvoiceForm from './InvoiceForm'
 import InvoiceFormReview from './InvoiceFormReview'
 
-class CreateInvoice extends Component {
+const CreateInvoice = () => {
+	const [showInvoiceReview, setShowInvoiceReview] = useState(false)
 
-	state = {
-		showInvoiceReview: false
-	}
-
-	renderContent() {
-		if (this.state.showInvoiceReview) {
-			return <InvoiceFormReview onCancel={() => this.setState({ showInvoiceReview: false })} />
+	const renderContent = () => {
+		if (showInvoiceReview) {
+			return <InvoiceFormReview onCancel={() => setShowInvoiceReview(false)} />
 		}
-		return <InvoiceForm onInvoiceSubmit={() => this.setState({ showInvoiceReview: true })} />
+		return <InvoiceForm onInvoiceSubmit={() => setShowInvoiceReview(true)} />
 	}
 
-	render() {
-		return (
-			<div className="dashboard-item create-invoice">
-				{this.renderContent()}
-			</div>
-		) 
-	}
+	return (
+		<div className="dashboard-item create-invoice">
+			{renderContent()}
+		</div>
+	) 
 }
 
 export default reduxForm({

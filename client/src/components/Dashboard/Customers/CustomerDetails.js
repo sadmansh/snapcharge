@@ -1,35 +1,30 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import AuthHeaders from '../../../utils/AuthHeaders'
 
-class CustomerDetails extends Component {
-	state = {
-		customer: null
-	}
+const CustomerDetails = props => {
+	const [customer, setCustomer] = useState({})
 
-	async componentDidMount() {
-		const customer = await axios.get(`http://localhost:5000/api/customers/${this.props.match.params.id}`, AuthHeaders)
-		this.setState({ customer: customer.data })
-	}
+	const fetchCustomer = useCallback(async () => {
+		const customer = await axios.get(`http://localhost:5000/api/customers/${props.match.params.id}`, AuthHeaders)
+		setCustomer(customer.data)
+	}, [props.match.params.id])
 
-	renderCustomer() {
-		const { customer } = this.state
+	useEffect(() => {
+		fetchCustomer()
+	}, [fetchCustomer])
+
+	const renderCustomer = () => {
 		if (customer) {
 			return (
-				<div>
-					{customer.name}
-				</div>
+				<div>{customer.name}</div>
 			)
 		}
 	}
 
-	render() {
-		return (
-			<div>
-				{this.renderCustomer()}
-			</div>
-		)
-	}
+	return (
+		<div>{renderCustomer()}</div>
+	)
 }
 
 export default CustomerDetails

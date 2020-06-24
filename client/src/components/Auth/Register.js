@@ -1,66 +1,54 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import * as actions from '../../actions'
-import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-class Register extends Component {
-	constructor(props) {
-		super(props)
+const Register = props => {
+	const [user, setUser] = useState({
+		firstName: '',
+		lastName: '',
+		email: '',
+		country: 'BD',
+		password: ''
+	})
 
-		this.state = {
-			firstName: '',
-			lastName: '',
-			email: '',
-			country: 'BD',
-			password: ''
-		}
+	const dispatch = useDispatch()
+
+	const { countries } = useSelector(state => state)
+
+	useEffect(() => {
+		dispatch(actions.fetchCountries())
+	}, [dispatch])
+
+	const handleChange = e => {
+		setUser({ ...user, [e.target.name]: e.target.value })
 	}
 
-	componentDidMount() {
-		this.props.fetchCountries()
-	}
-
-	handleChange = (e) => {
-		const { name, value } = e.target
-		this.setState({ [name]: value })
-	}
-
-	handleSubmit = (e) => {
+	const handleSubmit = e => {
 		e.preventDefault()
-		const user = this.state
-		if (user) this.props.registerUser(user, this.props.history)
+		dispatch(actions.registerUser(user, props.history))
 	}
-	
-	renderCountriesSelect() {
-		if (this.props.countries) {
-			return this.props.countries.map(country => {
-				return (
-					<option key={country.iso2Code} value={country.iso2Code}>{country.name}</option>
-				)
-			})
+
+	const renderCountries = () => {
+		if (countries) {
+			return countries.map(country => <option key={country.iso2Code} value={country.iso2Code}>{country.name}</option>)
 		}
 	}
 
-	render() {
-		return (
-			<div>
-				<form onSubmit={this.handleSubmit}>
-					<input type="text" name="firstName" placeholder="First name" value={this.state.firstName} onChange={this.handleChange} />
-					<input type="text" name="lastName" placeholder="Last name" value={this.state.lastName} onChange={this.handleChange} />
-					<input type="email" name="email" placeholder="Email address" value={this.state.email} onChange={this.handleChange} />
-					<input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
-					<select name="country" value={this.state.country} onChange={this.handleChange}>
-						{this.renderCountriesSelect()}
-					</select>
-					<button type="submit">Register</button>
-				</form>
-			</div>
-		)
-	}
+	return (
+		<div>
+			<form onSubmit={handleSubmit}>
+				<input type="text" name="firstName" placeholder="First name" onChange={handleChange} />
+				<input type="text" name="lastName" placeholder="Last name" onChange={handleChange} />
+				<input type="email" name="email" placeholder="Email address" onChange={handleChange} />
+				<input type="password" name="password" placeholder="Password" onChange={handleChange} />
+				<select name="country" value={user.country} onChange={handleChange}>
+					{renderCountries()}
+				</select>
+				<button type="submit">Register</button>
+			</form>
+		</div>
+	)
 }
 
-const mapStateToProps = ({ countries }) => {
-	return { countries }
-}
-
-export default connect(mapStateToProps, actions)(withRouter(Register))
+export default withRouter(Register)

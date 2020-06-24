@@ -1,44 +1,34 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import * as actions from '../../actions'
-import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-class Login extends Component {
-	constructor(props) {
-		super(props)
+const Login = props => {
+	const [user, setUser] = useState({
+		email: '',
+		password: ''
+	})
 
-		this.state = {
-			email: '',
-			password: ''
-		}
-		this.handleSubmit = this.handleSubmit.bind(this)
-		this.handleChange = this.handleChange.bind(this)
+	const dispatch = useDispatch()
+
+	const handleChange = e => {
+		setUser({ ...user, [e.target.name]: e.target.value })
 	}
 
-	handleChange(e) {
-		const { name, value } = e.target
-		this.setState({ [name]: value })
-	}
-
-	handleSubmit(e) {
+	const handleSubmit = e => {
 		e.preventDefault()
-		const { email, password } = this.state
-		if (email && password) this.props.loginUser(email, password, this.props.history)
+		if (user.email && user.password) dispatch(actions.loginUser(user.email, user.password, props.history))
 	}
 
-	render() {
-		return (
-			<div>
-				Welcome to SnapCharge!
-
-				<form onSubmit={this.handleSubmit}>
-					<input type="email" name="email" value={this.state.email} onChange={this.handleChange} />
-					<input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
-					<button type="submit">Login</button>
-				</form>
-			</div>
-		)
-	}
+	return (
+		<div>
+			<form onSubmit={handleSubmit}>
+				<input type="email" name="email" onChange={handleChange} />
+				<input type="password" name="password" onChange={handleChange} />
+				<button type="submit">Login</button>
+			</form>
+		</div>
+	)
 }
 
-export default connect(null, actions)(withRouter(Login))
+export default withRouter(Login)

@@ -1,27 +1,20 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import * as actions from '../../../actions'
-
+import React, { useState } from 'react'
 import CreateCustomer from './CreateCustomer'
 import CustomerList from './CustomerList'
 
-class Customers extends Component {
-	state = {
-		modal: false
+const Customers = () => {
+	const [modal, setModal] = useState(false)
+
+	const toggleAddCustomerModal = () => {
+		setModal(!modal)
 	}
 
-	toggleAddCustomerModal = () => {
-		this.setState({ modal: !this.state.modal })
-	}
-
-	render() {
-		return (
-			<div className="dashboard-item">
-				<CreateCustomer modal={this.state.modal} toggleModal={this.toggleAddCustomerModal} />
-				<CustomerList toggleModal={this.toggleAddCustomerModal} />
-			</div>
-		)
-	}
+	return (
+		<div className="dashboard-item">
+			<CreateCustomer modal={modal} toggleModal={toggleAddCustomerModal} />
+			<CustomerList toggleModal={toggleAddCustomerModal} />
+		</div>
+	)
 }
 
-export default connect(null, actions)(Customers)
+export default Customers
