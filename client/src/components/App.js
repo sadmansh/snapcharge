@@ -8,6 +8,7 @@ import './Ant.scss'
 import Landing from './Landing'
 import Login from './Auth/Login'
 import Register from './Auth/Register'
+import VerifyEmail from './Auth/VerifyEmail'
 import Dashboard from './Dashboard'
 
 class App extends Component {
@@ -18,6 +19,7 @@ class App extends Component {
 				<Route exact path="/" component={Landing} />
 				<Route exact path="/login" component={Login} />
 				<Route exact path="/register" component={Register} />
+				<Route exact path="/verify" component={VerifyEmail} />
 				<Route path="/dashboard" component={Dashboard} />
 			</BrowserRouter>
 		)
