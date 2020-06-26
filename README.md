@@ -6,16 +6,14 @@ Invoicing platform for freelancers
 ### Payments
 * Display received payments
 * Display due payments
-* Option to cash out
-* Add payment logs
-* Add payouts model
+* Option to request payout
+* Add payout logs
 
 ### Customers
 * Single customer view
 * Single customer edit
 
 ### Invoices
-* Single invoice view
 * Single invoice edit if not sent
 
 ### Others

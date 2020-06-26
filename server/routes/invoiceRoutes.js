@@ -4,6 +4,7 @@ const keys = require('../config/keys')
 const stripe = require('stripe')(keys.stripeSecretKey)
 const mongoose = require('mongoose')
 const Invoice = mongoose.model('invoices')
+const Customer = mongoose.model('customers')
 
 router.post('/invoices/create', passport.authenticate('jwt', { session: false }), async (req, res) => {
 	console.log(`Attempting to create invoice for user ${req.user.id}`)
@@ -73,7 +74,7 @@ router.get('/invoices', passport.authenticate('jwt', { session: false }), async 
 router.get('/invoices/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
 	console.log(`Attempting to fetch invoice ${req.params.id} for user ${req.user.id}`)
 	try {
-		const invoice = await Invoice.findById(req.params.id)
+		const invoice = await Invoice.findById(req.params.id).populate({ path: '_customer', model: Customer })
 		res.send(invoice)
 		console.log(`Sent invoice ${req.params.id} for user ${req.user.id}`)
 	} catch (error) {
