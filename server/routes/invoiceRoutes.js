@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const Invoice = mongoose.model('invoices')
 
 router.post('/invoices/create', passport.authenticate('jwt', { session: false }), async (req, res) => {
+	console.log(`Attempting to create invoice for user ${req.user.id}`)
 	try {
 		const stripeId = req.body.customer.stripeId
 		const invoiceItems = req.body.invoiceItems
@@ -31,6 +32,7 @@ router.post('/invoices/create', passport.authenticate('jwt', { session: false })
 		})
 
 		if (invoice) {
+			console.log(`Created Stripe invoice object ${invoice.id} for user ${req.user.id}`)
 			const existingInvoice = await Invoice.findOne({ stripeId: invoice.id })
 			if (existingInvoice) return res.status(200).send({ error: 'Invoice already exists.' })
 			const newInvoice = await new Invoice({
@@ -48,6 +50,7 @@ router.post('/invoices/create', passport.authenticate('jwt', { session: false })
 				total: invoice.total
 			}).save()
 			const updateInvoiceMeta = await stripe.invoices.update(invoice.id, { metadata: { invoice: newInvoice.id } })
+			console.log(`Created invoice ${newInvoice.id} for user ${req.user.id}`)
 			res.send(newInvoice)
 		}
 	} catch (error) {
@@ -57,18 +60,22 @@ router.post('/invoices/create', passport.authenticate('jwt', { session: false })
 })
 
 router.get('/invoices', passport.authenticate('jwt', { session: false }), async (req, res) => {
+	console.log(`Attempting to fetch all invoices for user ${req.user.id}`)
 	try {
 		const invoices = await Invoice.find({ _user: req.user.id })
 		res.send(invoices.reverse())
+		console.log(`Sent all invoices for user ${req.user.id}`)
 	} catch (error) {
 		res.status(200).send({ error: error.message })
 	}
 })
 
 router.get('/invoices/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+	console.log(`Attempting to fetch invoice ${req.params.id} for user ${req.user.id}`)
 	try {
 		const invoice = await Invoice.findById(req.params.id)
 		res.send(invoice)
+		console.log(`Sent invoice ${req.params.id} for user ${req.user.id}`)
 	} catch (error) {
 		res.status(200).send({ error: error.message })
 	}

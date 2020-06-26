@@ -13,19 +13,24 @@ router.post('/auth/register', async (req, res, next) => {
 	if (!user.password) return res.status(422).send({ error: 'Password is required.' })
 	const existingUser = await User.findOne({ email: user.email })
 	if (existingUser) return res.status(422).send({ error: 'User already exists.' })
+	console.log(`Attempting to create user ${user.email}`)
 	try {
 		const newUser = await new User(user).save()
 		newUser.password = null
 		res.json({ token: tokenForUser(newUser), user: newUser })
+		console.log(`Created user ${newUser.id}`)
 	} catch (error) {
+		console.error(error)
 		return res.status(422).send({ error: error })
 	}
 	
 })
 
 router.post('/auth/login', passport.authenticate('local', { session: true }), (req, res, next) => {
+	console.log(`Attempting to log in user ${req.user.id}`)
 	req.user.password = null
 	res.send({ token: tokenForUser(req.user), user: req.user })
+	console.log(`User ${req.user.id} logged in`)
 })
 
 router.get('/auth/user', (req, res, next) => {
