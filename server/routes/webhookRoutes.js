@@ -58,6 +58,16 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), async (req, 
 				if (error) console.error(error)
 				else console.log(`Updated invoice status to "${invoice.status.toUpperCase()}" for invoice ID ${invoice.id}`)
 			})
+
+			// Update user balance
+			await User.updateOne({
+				_id: req.user.id
+			}, {
+				$inc: { balance: invoice.total }
+			}, (error, res) => {
+				if (error) console.error(error)
+				else console.log(`Updated user balance for user ID ${req.user._id}`)
+			})
 			break
 		}
 		default: {

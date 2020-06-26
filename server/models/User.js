@@ -27,9 +27,10 @@ const UserSchema = new Schema({
 		required: false,
 		default: false
 	},
-	created: {
-		type: Date,
-		default: Date.now()
+	balance: {
+		type: Number,
+		required: false,
+		default: 0
 	},
 	password: {
 		type: String,
