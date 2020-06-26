@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import AuthHeaders from '../../../utils/AuthHeaders'
-import { Table, Divider, Descriptions } from 'antd'
+import { Table, Divider, Descriptions, Button } from 'antd'
 import { CheckCircleTwoTone } from '@ant-design/icons'
 import getCurrencySymbol from '../../../utils/getCurrencySymbol'
 import moment from 'moment'
 
 const InvoiceDetails = props => {
 	const [invoice, setInvoice] = useState({})
+	const [editMode, setEditMode] = useState(false)
 
 	const fetchInvoice = useCallback(async () => {
 		const invoice = await axios.get(`http://localhost:5000/api/invoices/${props.match.params.id}`, AuthHeaders)
@@ -51,10 +52,16 @@ const InvoiceDetails = props => {
 		<div className="dashboard-item">
 			{invoice && invoice._customer ? 
 				<div className="box">
-					<h1>
-						Invoice #{invoice.number}
-						{invoice.status === 'paid' ? <CheckCircleTwoTone twoToneColor="#52c41a" style={{ marginLeft: '.5rem' }} /> : ''}
-					</h1>
+					<div className="section-title">
+						<h1>
+							Invoice #{invoice.number}
+							{invoice.status === 'paid' ? <CheckCircleTwoTone twoToneColor="#52c41a" style={{ marginLeft: '.5rem' }} /> : ''}
+						</h1>
+						<div className="section-actions">
+							<Button type={!editMode ? 'link' : 'primary'} onClick={() => setEditMode(!editMode)}>{!editMode ? 'Edit invoice' : 'Save invoice'}</Button>
+						</div>
+					</div>
+
 					<Divider />
 					<div className="invoice-customer">
 						<h2>Customer</h2>
