@@ -1,6 +1,9 @@
 # SnapCharge
 Invoicing platform for freelancers
 
+## Pitfalls
+* Single default currency for users
+
 ## Todo
 
 ### Payments
