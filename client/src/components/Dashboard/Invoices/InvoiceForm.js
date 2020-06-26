@@ -12,39 +12,6 @@ const SelectField = makeAntField(Select)
 
 class InvoiceForm extends Component {
 
-	state = {
-		customerSelected: false,
-		selectedCustomerCurrency: null,
-	}
-
-	componentDidMount() {
-		
-	}
-
-	renderCurrencies() {
-
-		let currencyOptions = [
-			{ key: 'usd', label: 'US Dollar' },
-			{ key: 'eur', label: 'Euro' },
-			{ key: 'aud', label: 'Australian Dollar' },
-			{ key: 'gbp', label: 'British Pound' }
-		]
-
-		if (this.state.selectedCustomerCurrency) {
-			currencyOptions = currencyOptions.filter(currency => currency.key === this.state.selectedCustomerCurrency)
-		}
-
-		return (
-			<Field name="currency" label="Currency" rules={[{ required: true }]} value={this.state.selectedCustomerCurrency} component={SelectField} placeholder={this.state.customerSelected ? 'Select a currency' : 'Select a customer first'} style={{ width: '35%' }} disabled={!this.state.customerSelected}>
-				{this.state.customerSelected ? currencyOptions.map(({key, label}) => {
-					return (
-						<Option key={key} value={key}>{`${key.toUpperCase()} - ${label}`}</Option>
-					)
-				}) : ''}
-			</Field>
-		)
-	}
-
 	renderCustomerSelect() {
 		const options = this.props.customers ? this.props.customers : []
 		return (
@@ -55,7 +22,6 @@ class InvoiceForm extends Component {
 			}} onSelect={(value, option) => {
 				const id = option.key
 				const selectedCustomer = options.find(option => option._id === id)
-				this.setState({ customerSelected: true, selectedCustomerCurrency: selectedCustomer.currency })
 			}}>
 				{options.map(customer => (
 					<Option value={`${customer._id}, ${customer.stripeId}`} key={customer._id}><strong>{customer.name}</strong> {customer.email}</Option>
@@ -89,6 +55,12 @@ class InvoiceForm extends Component {
 	render() {
 		this.props.fetchCustomers()
 		const { handleSubmit } = this.props
+		let currencies = [
+			{ key: 'usd', label: 'US Dollar' },
+			{ key: 'eur', label: 'Euro' },
+			{ key: 'aud', label: 'Australian Dollar' },
+			{ key: 'gbp', label: 'British Pound' }
+		]
 		return (
 			<Form layout="vertical" id="createInvoice" className="box" onFinish={handleSubmit(this.props.onInvoiceSubmit)}>
 				<h1>Create invoice</h1>
@@ -104,8 +76,8 @@ class InvoiceForm extends Component {
 				</div>
 				<Divider />
 				<div className="invoice-details">
+					<Field name="currency" component={InputField} label="Currency" defaultValue={`${this.props.user.currency.toUpperCase()} - ${currencies.find(({ key }) => key === this.props.user.currency).label}`} style={{ width: '320px' }} disabled={true} />
 					<h2>Payment details</h2>
-					{this.renderCurrencies()}
 					<Field name="daysUntilDue" component={InputField} label="Payment due" addonAfter="days after invoice is sent" style={{ width: '320px' }} />
 				</div>
 				<Button form="createInvoice" type="primary" htmlType="submit">Create invoice</Button>
@@ -114,8 +86,8 @@ class InvoiceForm extends Component {
 	}
 }
 
-const mapStateToProps = ({ customers }) => {
-	return { customers }
+const mapStateToProps = ({ customers, user }) => {
+	return { customers, user }
 }
 
 InvoiceForm = reduxForm({
