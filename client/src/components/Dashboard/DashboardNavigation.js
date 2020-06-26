@@ -11,7 +11,7 @@ const DashboardNavigation = () => {
 					<Link to="/dashboard">Home</Link>
 				</Menu.Item>
 				<Menu.Item key="payments" icon={<DollarCircleTwoTone />}>
-					<Link to="/dashboard/payments">Payments</Link>
+					<Link to="/dashboard/payouts">Payouts</Link>
 				</Menu.Item>
 				<Menu.Item key="customers" icon={<SmileTwoTone />}>
 					<Link to="/dashboard/customers">Customers</Link>
