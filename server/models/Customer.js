@@ -21,11 +21,6 @@ const CustomerSchema = new Schema({
 		type: String,
 		required: true
 	},
-	currency: {
-		type: String,
-		required: false,
-		default: null
-	},
 	_user: {
 		type: Schema.Types.ObjectId,
 		ref: 'User'

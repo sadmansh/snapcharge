@@ -9,7 +9,7 @@ router.post('/invoices/create', passport.authenticate('jwt', { session: false })
 	try {
 		const stripeId = req.body.customer.stripeId
 		const invoiceItems = req.body.invoiceItems
-		const currency = req.body.customer.currency
+		const currency = req.user.currency
 		for (const item of invoiceItems) {
 			const invoiceItem = await stripe.invoiceItems.create({
 				customer: stripeId,

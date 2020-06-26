@@ -19,21 +19,6 @@ router.post('/hooks', bodyParser.raw({ type: 'application/json' }), async (req, 
 	}
 
 	switch (event.type) {
-		case 'customer.updated': {
-			// Update customer currency when an invoice is created
-			const customer = event.data.object
-			if (customer.currency) {
-				await Customer.updateOne({
-					stripeId: customer.id,
-				}, {
-					$set: { currency: customer.currency }
-				}, (error, res) => {
-					if (error) console.error(error)
-					else console.log(`Updated currency for customer ${customer.name}`)
-				})
-			}
-			break
-		}
 		case 'invoice.sent': {
 			const invoice = event.data.object
 			// Update invoice status

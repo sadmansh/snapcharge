@@ -32,6 +32,11 @@ const UserSchema = new Schema({
 		required: false,
 		default: 0
 	},
+	currency: {
+		type: String,
+		required: false,
+		default: null
+	},
 	password: {
 		type: String,
 		required: true
